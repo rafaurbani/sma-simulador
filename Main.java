@@ -6,12 +6,19 @@ public class Main {
     private static final int C = 324234;
     private static final long M = 327844324;
 
+    private static int minArrival = 1;
+    private static int maxArrival = 4;
+    private static int minService = 3;
+    private static int maxService = 4;
+    private static int minServiceQ2 = 2;
+    private static int maxServiceQ2 = 3;
+
     private static double tempoGlobal = 0;
 
-    protected static Fila fila = new Fila(3, 5, 2, 5, 3, 5);
+    protected static Fila fila = new Fila(3, 5, minArrival, maxArrival, minService, maxService);
     
-    protected static Fila fila1 = new Fila(2, 3, 1, 4, 3, 4);
-    protected static Fila fila2 = new Fila(3, 5, 0, 0, 2, 3);
+    protected static Fila fila1 = new Fila(2, 3, minArrival, maxArrival, minService, maxService);
+    protected static Fila fila2 = new Fila(1, 5, 0, 0, minServiceQ2, maxServiceQ2);
     
     protected static final PriorityQueue<Evento> escalonador = new PriorityQueue<>();
 
@@ -36,7 +43,7 @@ public class Main {
             count--;
         }
 
-        for (int i = 0; i <= fila.servers(); i++) {
+        for (int i = 0; i <= fila.getCapacity(); i++) {
             System.out.println("Número de clientes na fila: " + i + " - Tempo médio: " + (fila.getTimes()[i] / tempoGlobal) * 100 + "%");
         }
     }
@@ -57,13 +64,13 @@ public class Main {
             count--;
         }
 
-        for (int i = 0; i <= fila1.servers(); i++) {
+        for (int i = 0; i <= fila1.getCapacity(); i++) {
             System.out.println("Número de clientes na fila 1: " + i + " - Tempo médio: " + (fila1.getTimes()[i] / tempoGlobal) * 100 + "%");
         }
 
         System.out.println("--------------------------------------------------");
 
-        for (int i = 0; i <= fila2.servers(); i++) {
+        for (int i = 0; i <= fila2.getCapacity(); i++) {
             System.out.println("Número de clientes na fila 2: " + i + " - Tempo médio: " + (fila2.getTimes()[i] / tempoGlobal) * 100 + "%");
         }
 
@@ -90,20 +97,20 @@ public class Main {
         if (fila.status() < fila.capacity()) {
             fila.in();
             if (fila.status() <= fila.servers()) {
-                escalonador.add(new Evento(1, tempoRandom(3, 5)));
+                escalonador.add(new Evento(1, tempoRandom(minService, maxService)));
             }
         } else {
             fila.loss();
         }
 
-        escalonador.add(new Evento(0, tempoRandom(2, 5)));
+        escalonador.add(new Evento(0, tempoRandom(minArrival, maxArrival)));
     }
 
     public static void saidaFilaUnica(Evento evento) {
         acumulaTempoFilaUnica(evento);
         fila.out();
         if (fila.status() >= fila.servers()) {
-            escalonador.add(new Evento(1, tempoRandom(3, 5)));
+            escalonador.add(new Evento(1, tempoRandom(minService, maxService)));
         }
     }
 
@@ -118,20 +125,20 @@ public class Main {
         if (fila1.status() < fila1.capacity()) {
             fila1.in();
             if (fila1.status() <= fila1.servers()) {
-                escalonador.add(new Evento(2, tempoRandom(3, 5)));
+                escalonador.add(new Evento(2, tempoRandom(minService, maxService)));
             }
         } else {
             fila1.loss();
         }
 
-        escalonador.add(new Evento(0, tempoRandom(2, 5)));
+        escalonador.add(new Evento(0, tempoRandom(minArrival, maxArrival)));
     }
 
     public static void saidaTandem(Evento evento) {
         acumulaTempoTandem(evento);
         fila2.out();
         if (fila2.status() >= fila2.servers()) {
-            escalonador.add(new Evento(1, tempoRandom(3, 5)));
+            escalonador.add(new Evento(1, tempoRandom(minServiceQ2, maxServiceQ2)));
         }
     }
 
@@ -139,12 +146,12 @@ public class Main {
         acumulaTempoTandem(evento);
         fila1.out();
         if (fila1.status() >= fila1.servers()) {
-            escalonador.add(new Evento(2, tempoRandom(5, 6)));
+            escalonador.add(new Evento(2, tempoRandom(minService, maxService)));
         }
         if (fila2.status() < fila2.capacity()) {
             fila2.in();
             if (fila2.status() <= fila2.servers()) {
-                escalonador.add(new Evento(1, tempoRandom(2, 4)));
+                escalonador.add(new Evento(1, tempoRandom(minServiceQ2, maxServiceQ2)));
             }
         } else {
             fila2.loss();

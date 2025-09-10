@@ -53,6 +53,10 @@ public class Fila {
         return times;
     }
 
+    public int getCapacity() {
+        return capacity;
+    }
+
     public double getMinArrival() {
         return minArrival;
     }
