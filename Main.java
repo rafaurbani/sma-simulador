@@ -74,6 +74,9 @@ public class Main {
             System.out.println("Número de clientes na fila 2: " + i + " - Tempo médio: " + (fila2.getTimes()[i] / tempoGlobal) * 100 + "%");
         }
 
+
+        System.out.println("--------------------------------------------------");
+        
         System.out.println("Perdas da fila 1: " + fila1.getLoss());
         System.out.println("Perdas da fila 2: " + fila2.getLoss());
 
