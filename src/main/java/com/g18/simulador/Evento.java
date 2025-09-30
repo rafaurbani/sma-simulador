@@ -1,3 +1,5 @@
+package com.g18.simulador;
+
 public class Evento implements Comparable<Evento> {
     public static final int CHEGADA = 0;
     public static final int SAIDA = 1;

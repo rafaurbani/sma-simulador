@@ -1,6 +1,8 @@
+package com.g18.simulador;
+
 import java.util.PriorityQueue;
 
-public class Main {
+public class Escalonador {
     private static double x = 12934;
     private static final int A = 33443;
     private static final int C = 324234;

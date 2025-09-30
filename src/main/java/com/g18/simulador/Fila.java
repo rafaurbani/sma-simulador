@@ -1,3 +1,5 @@
+package com.g18.simulador;
+
 public class Fila {
     private final int servers;
     private final int capacity;
@@ -77,3 +79,4 @@ public class Fila {
         return loss;
     }
 }
+
