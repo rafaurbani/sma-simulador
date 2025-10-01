@@ -6,26 +6,43 @@ public class Main {
     private static final int C = 324234;
     private static final long M = 327844324;
 
-    private static int minArrival = 1;
-    private static int maxArrival = 4;
-    private static int minService = 3;
-    private static int maxService = 4;
-    private static int minServiceQ2 = 2;
-    private static int maxServiceQ2 = 3;
+    // valores que virão do arquivo
+    private static int minArrival;
+    private static int maxArrival;
+    private static int minService;
+    private static int maxService;
+    private static int minServiceQ2;
+    private static int maxServiceQ2;
 
     private static double tempoGlobal = 0;
 
-    protected static Fila fila = new Fila(3, 5, minArrival, maxArrival, minService, maxService);
-    
-    protected static Fila fila1 = new Fila(2, 3, minArrival, maxArrival, minService, maxService);
-    protected static Fila fila2 = new Fila(1, 5, 0, 0, minServiceQ2, maxServiceQ2);
-    
+    protected static Fila fila;
+    protected static Fila fila1;
+    protected static Fila fila2;
+
     protected static final PriorityQueue<Evento> escalonador = new PriorityQueue<>();
 
     public static void main(String[] args) {
+        // Lê as configs do arquivo
+        var config = ConfigReader.lerConfig("config.txt");
+
+        minArrival = config.get("minArrival");
+        maxArrival = config.get("maxArrival");
+        minService = config.get("minService");
+        maxService = config.get("maxService");
+        minServiceQ2 = config.get("minServiceQ2");
+        maxServiceQ2 = config.get("maxServiceQ2");
+
+        // inicializa as filas com os valores do arquivo
+        fila  = new Fila(3, 5, minArrival, maxArrival, minService, maxService);
+        fila1 = new Fila(config.get("serversFila1"), config.get("capacityFila1"), minArrival, maxArrival, minService, maxService);
+        fila2 = new Fila(config.get("serversFila2"), config.get("capacityFila2"), 0, 0, minServiceQ2, maxServiceQ2);
+
+        // roda a simulação (escolha qual chamar)
         // filaUnica();
         tandem();
     }
+
 
     public static void filaUnica() {
         int count = 100000;
