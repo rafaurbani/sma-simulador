@@ -1,0 +1,10 @@
+serversFila1=2
+capacityFila1=3
+serversFila2=1
+capacityFila2=5
+minArrival=1
+maxArrival=4
+minService=3
+maxService=4
+minServiceQ2=2
+maxServiceQ2=3
