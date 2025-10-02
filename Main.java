@@ -49,9 +49,12 @@ public class Main {
         p3out = ConfigReader.getDouble(config, "p3out");
 
         fila = new Fila(3, 5, minArrival, maxArrival, minService, maxService);
-        fila1 = new Fila(ConfigReader.getInt(config, "serversFila1"), ConfigReader.getInt(config, "capacityFila1"), minArrival, maxArrival, minService, maxService);
-        fila2 = new Fila(ConfigReader.getInt(config, "serversFila2"), ConfigReader.getInt(config, "capacityFila2"), 0, 0, minServiceQ2, maxServiceQ2);
-        fila3 = new Fila(ConfigReader.getInt(config, "serversFila3"), ConfigReader.getInt(config, "capacityFila3"), 0, 0, minServiceQ3, maxServiceQ3);
+        fila1 = new Fila(ConfigReader.getInt(config, "serversFila1"), ConfigReader.getInt(config, "capacityFila1"),
+                minArrival, maxArrival, minService, maxService);
+        fila2 = new Fila(ConfigReader.getInt(config, "serversFila2"), ConfigReader.getInt(config, "capacityFila2"), 0,
+                0, minServiceQ2, maxServiceQ2);
+        fila3 = new Fila(ConfigReader.getInt(config, "serversFila3"), ConfigReader.getInt(config, "capacityFila3"), 0,
+                0, minServiceQ3, maxServiceQ3);
 
         // filaUnica();
         // tandem();
@@ -66,7 +69,7 @@ public class Main {
 
         while (count-- > 0 && !escalonador.isEmpty()) {
             Evento evento = escalonador.poll();
-            
+
             switch (evento.getTipo()) {
                 case Evento.CHEGADA -> chegadaFilaUnica(evento);
                 case Evento.SAIDA -> saidaFilaUnica(evento);
@@ -83,7 +86,7 @@ public class Main {
     public static void tandem() {
         escalonador.clear();
         tempoGlobal = 0;
-        
+
         int count = 100000;
         escalonador.add(new Evento(Evento.CHEGADA, tempoRandom(minArrival, maxArrival)));
 
@@ -96,22 +99,22 @@ public class Main {
                 case Evento.PASSAGEM -> passagemTandem(evento);
             }
         }
-        
+
         imprimeResultadosTandem();
     }
 
     private static void imprimeResultadosTandem() {
         System.out.println("---------------- Fila 1 ----------------");
         for (int i = 0; i <= fila1.getCapacity(); i++) {
-             double perc = tempoGlobal > 0 ? (fila1.getTimes()[i] / tempoGlobal) * 100.0 : 0;
-             System.out.printf("N=%d -> %.4f%%%n", i, perc);
+            double perc = tempoGlobal > 0 ? (fila1.getTimes()[i] / tempoGlobal) * 100.0 : 0;
+            System.out.printf("N=%d -> %.4f%%%n", i, perc);
         }
         System.out.println("Perdas: " + fila1.getLoss());
 
         System.out.println("---------------- Fila 2 ----------------");
         for (int i = 0; i <= fila2.getCapacity(); i++) {
-             double perc = tempoGlobal > 0 ? (fila2.getTimes()[i] / tempoGlobal) * 100.0 : 0;
-             System.out.printf("N=%d -> %.4f%%%n", i, perc);
+            double perc = tempoGlobal > 0 ? (fila2.getTimes()[i] / tempoGlobal) * 100.0 : 0;
+            System.out.printf("N=%d -> %.4f%%%n", i, perc);
         }
         System.out.println("Perdas: " + fila2.getLoss());
         System.out.println("Tempo total: " + tempoGlobal);
@@ -170,17 +173,20 @@ public class Main {
         Fila origem = filaPorId(e.getFilaId());
         origem.out();
         if (origem.status() >= origem.servers()) {
-            escalonador.add(new Evento(Evento.PASSAGEM, tempoRandom(serviceMin(origem), serviceMax(origem)), e.getFilaId()));
+            escalonador.add(
+                    new Evento(Evento.PASSAGEM, tempoRandom(serviceMin(origem), serviceMax(origem)), e.getFilaId()));
         }
 
         int dest = roteamento(e.getFilaId());
-        if (dest == 0) return;
+        if (dest == 0)
+            return;
 
         Fila destino = filaPorId(dest);
         if (destino.status() < destino.capacity()) {
             destino.in();
             if (destino.status() <= destino.servers()) {
-                escalonador.add(new Evento(Evento.PASSAGEM, tempoRandom(serviceMin(destino), serviceMax(destino)), dest));
+                escalonador
+                        .add(new Evento(Evento.PASSAGEM, tempoRandom(serviceMin(destino), serviceMax(destino)), dest));
             }
         } else {
             destino.loss();
@@ -194,11 +200,13 @@ public class Main {
     private static int roteamento(int origemId) {
         double u = nextRandom();
         return switch (origemId) {
-            case 1 -> u < p12 ? 2 : 3; 
+            case 1 -> u < p12 ? 2 : 3;
             case 2 -> {
-                if (u < p21) yield 1;
-                if (u < p21 + p22) yield 3;
-                yield 0; 
+                if (u < p21)
+                    yield 1;
+                if (u < p21 + p22)
+                    yield 3;
+                yield 0;
             }
             case 3 -> u < p33 ? 1 : 0;
             default -> 0;
@@ -215,14 +223,18 @@ public class Main {
     }
 
     private static int serviceMin(Fila f) {
-        if (f == fila1) return minService;
-        if (f == fila2) return minServiceQ2;
+        if (f == fila1)
+            return minService;
+        if (f == fila2)
+            return minServiceQ2;
         return minServiceQ3;
     }
 
     private static int serviceMax(Fila f) {
-        if (f == fila1) return maxService;
-        if (f == fila2) return maxServiceQ2;
+        if (f == fila1)
+            return maxService;
+        if (f == fila2)
+            return maxServiceQ2;
         return maxServiceQ3;
     }
 
@@ -234,7 +246,7 @@ public class Main {
     public static double tempoRandom(int a, int b) {
         return tempoGlobal + (a + (b - a) * nextRandom());
     }
-    
+
     public static void chegadaFilaUnica(Evento evento) {
         acumulaTempoFilaUnica(evento);
         if (fila.status() < fila.capacity()) {
@@ -297,10 +309,11 @@ public class Main {
             fila2.loss();
         }
     }
-    
+
     private static void acumulaTempoRede(Evento e) {
         double delta = e.getTempo() - tempoGlobal;
-        if (delta < 0) return;
+        if (delta < 0)
+            return;
         fila1.addTimes(fila1.status(), delta);
         fila2.addTimes(fila2.status(), delta);
         fila3.addTimes(fila3.status(), delta);
@@ -309,7 +322,8 @@ public class Main {
 
     public static void acumulaTempoTandem(Evento evento) {
         double delta = evento.getTempo() - tempoGlobal;
-        if (delta < 0) return;
+        if (delta < 0)
+            return;
         fila1.addTimes(fila1.status(), delta);
         fila2.addTimes(fila2.status(), delta);
         tempoGlobal = evento.getTempo();
