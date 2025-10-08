@@ -6,27 +6,7 @@ import java.util.Map;
 
 public class ConfigReader {
 
-    public static Map<String, Integer> lerConfig(String caminhoArquivo) {
-        Map<String, Integer> config = new HashMap<>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
-            String linha;
-            while ((linha = br.readLine()) != null) {
-                if (linha.contains("=")) {
-                    String[] partes = linha.split("=");
-                    String chave = partes[0].trim();
-                    int valor = Integer.parseInt(partes[1].trim());
-                    config.put(chave, valor);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Erro ao ler arquivo: " + e.getMessage());
-        }
-
-        return config;
-    }
-
-    public static Map<String, String> lerConfigGenerico(String caminhoArquivo) {
+    public static Map<String, String> lerConfig(String caminhoArquivo) {
         Map<String, String> config = new HashMap<>();
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
             String linha;
@@ -46,6 +26,11 @@ public class ConfigReader {
         return config;
     }
 
-    public static int getInt(Map<String, String> cfg, String key) { return Integer.parseInt(cfg.get(key)); }
-    public static double getDouble(Map<String, String> cfg, String key) { return Double.parseDouble(cfg.get(key)); }
+    public static int getInt(Map<String, String> cfg, String key) {
+        return Integer.parseInt(cfg.get(key));
+    }
+
+    public static double getDouble(Map<String, String> cfg, String key) {
+        return Double.parseDouble(cfg.get(key));
+    }
 }

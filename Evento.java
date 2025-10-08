@@ -1,7 +1,7 @@
 public class Evento implements Comparable<Evento> {
-    public static final int CHEGADA = 0;  
-    public static final int SAIDA = 1;     
-    public static final int PASSAGEM = 2;  
+    public static final int CHEGADA = 0;
+    public static final int SAIDA = 1;
+    public static final int PASSAGEM = 2;
 
     private final int tipo;
     private final double tempo;
@@ -22,7 +22,15 @@ public class Evento implements Comparable<Evento> {
         return Double.compare(this.tempo, outroEvento.tempo);
     }
 
-    public int getTipo() { return tipo; }
-    public double getTempo() { return tempo; }
-    public int getFilaId() { return filaId; }
+    public int getTipo() {
+        return tipo;
+    }
+
+    public double getTempo() {
+        return tempo;
+    }
+
+    public int getFilaId() {
+        return filaId;
+    }
 }

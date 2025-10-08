@@ -1,3 +1,10 @@
+# TIPO FILA:
+# 1 = Fila Simples
+# 2 = Fila em Tandem
+# 3 = Fila em Redes
+
+tipoFila=3
+
 serversFila1=1
 capacityFila1=1
 serversFila2=2
@@ -6,8 +13,8 @@ serversFila3=2
 capacityFila3=10
 minArrival=2
 maxArrival=4
-minService=1
-maxService=2
+minServiceQ1=1
+maxServiceQ1=2
 minServiceQ2=4
 maxServiceQ2=6
 minServiceQ3=5
@@ -18,5 +25,5 @@ p13=0.2
 p21=0.3
 p22=0.5
 p2out=0.2
-p33=0.7
+p31=0.7
 p3out=0.3
